@@ -50,7 +50,7 @@ class MyPortfolio:
     NOTE: You can modify the initialization function
     """
 
-    def __init__(self, price, exclude, lookback=50, gamma=0):
+    def __init__(self, price, exclude, lookback=60, gamma=5):
         self.price = price
         self.returns = price.pct_change().fillna(0)
         self.exclude = exclude
@@ -61,21 +61,20 @@ class MyPortfolio:
         # Get the assets by excluding the specified column
         assets = self.price.columns[self.price.columns != self.exclude]
 
-        # Calculate the portfolio weights
+        # Create an empty weight DataFrame with the same index and columns
         self.portfolio_weights = pd.DataFrame(
-            index=self.price.index, columns=self.price.columns
+            0, index=self.price.index, columns=self.price.columns
         )
 
-        """
-        TODO: Complete Task 4 Below
-        """
-
-        """
-        TODO: Complete Task 4 Above
-        """
+        # all in tech
+        # how to lose
+        for date in self.price.index:
+            if "XLK" in assets:
+                self.portfolio_weights.loc[date, "XLK"] = 1.0
 
         self.portfolio_weights.ffill(inplace=True)
         self.portfolio_weights.fillna(0, inplace=True)
+
 
     def calculate_portfolio_returns(self):
         # Ensure weights are calculated
